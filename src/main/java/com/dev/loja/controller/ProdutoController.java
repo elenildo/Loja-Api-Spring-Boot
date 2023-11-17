@@ -39,7 +39,7 @@ public class ProdutoController {
     }
 
     @PostMapping("{produtoId}/imagens")
-    public ResponseEntity<?> adicionarImagens(@PathVariable Long produtoId, @RequestParam MultipartFile[] files){
+    public ResponseEntity<?> adicionarImagens(@PathVariable Long produtoId, @RequestPart MultipartFile[] files){
         return produtoService.adicionarImagens(produtoId, files);
     }
 

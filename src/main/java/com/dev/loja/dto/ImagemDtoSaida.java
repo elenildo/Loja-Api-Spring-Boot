@@ -5,6 +5,7 @@ import com.dev.loja.model.Imagem;
 import java.util.List;
 
 public class ImagemDtoSaida {
+    public boolean delete = false;
     public String caminho;
     public byte[] imagem;
 
