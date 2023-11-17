@@ -24,6 +24,8 @@ public class LancamentoService {
         var produto = buscarProdutoPorId(lancamento.getProduto().getId());
 
         if(lancamento.getQuantidade() > 0 ){
+            if(lancamento.getQuantidade() > 100)
+                throw  new RuntimeException("Essa operação está limitada a 100 produtos");
 
             List<Lancamento> lancamentos = new ArrayList<>();
 

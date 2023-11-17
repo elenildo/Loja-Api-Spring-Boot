@@ -12,15 +12,12 @@ import java.util.List;
 public class ProdutoDtoVitrine extends RepresentationModel<ProdutoDtoVitrine> {
 
     public String id;
-
     public String categoria;
-
     public String nome;
-
     public String precoVenda;
-
     @Lob
     public String descricao;
+    public boolean disponivel;
 
     public List<ImagemDtoSaida> imagens;
 
@@ -30,6 +27,7 @@ public class ProdutoDtoVitrine extends RepresentationModel<ProdutoDtoVitrine> {
         this.nome = produto.getNome();
         this.precoVenda = produto.getPrecoVenda().toString();
         this.descricao = produto.getDescricao();
+        this.disponivel = produto.getEstoqueAtual() > 0;
         this.imagens = produto.getImagens().stream().map(ImagemDtoSaida::new).toList();
         this.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(VitrineController.class)
                         .buscarPorId(produto.getId())).withSelfRel());
