@@ -5,6 +5,8 @@ import com.dev.loja.dto.ProdutoDtoEntrada;
 import com.dev.loja.service.ProdutoService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,8 +21,8 @@ public class ProdutoController {
     private ProdutoService produtoService;
 
     @GetMapping
-    public ResponseEntity<?> listarTudo(){
-        return produtoService.listarTudo();
+    public ResponseEntity<?> listarTudo(Pageable pageable){
+        return new ResponseEntity<>(produtoService.listarTudo(pageable), HttpStatus.OK);
     }
 
     @GetMapping("{id}")
@@ -28,9 +30,13 @@ public class ProdutoController {
         return produtoService.buscarPorId(id);
     }
 
+//    @PostMapping("busca")
+//    public ResponseEntity<?> buscarPorNome(@RequestParam String nome){
+//        return produtoService.buscarPorNome(nome);
+//    }
     @PostMapping("busca")
-    public ResponseEntity<?> buscarPorNome(@RequestParam String nome){
-        return produtoService.buscarPorNome(nome);
+    public ResponseEntity<?> buscarPorNome(@RequestParam String nome, Pageable pageable){
+        return new ResponseEntity<>(produtoService.buscarPorNome(nome, pageable),HttpStatus.OK);
     }
 
     @PostMapping

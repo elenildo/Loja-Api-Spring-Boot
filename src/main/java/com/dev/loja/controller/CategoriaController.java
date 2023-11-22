@@ -1,10 +1,11 @@
 package com.dev.loja.controller;
 
 import com.dev.loja.dto.CategoriaDto;
-import com.dev.loja.model.Categoria;
 import com.dev.loja.service.CategoriaService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +16,8 @@ public class CategoriaController {
     private CategoriaService categoriaService;
 
     @GetMapping
-    public ResponseEntity<?> listarTudo(){
-        return categoriaService.listarTudo();
+    public ResponseEntity<?> listarTudo(Pageable pageable){
+        return new ResponseEntity<>(categoriaService.listarTudo(pageable), HttpStatus.OK);
     }
 
     @PostMapping
@@ -32,7 +33,7 @@ public class CategoriaController {
         return categoriaService.buscarPorId(id);
     }
     @PostMapping("busca")
-    public ResponseEntity<?> buscarPorNome(@RequestParam String nome){
-        return categoriaService.buscarCategoriaPorNome(nome);
+    public ResponseEntity<?> buscarPorNome(@RequestParam String nome, Pageable pageable){
+        return new ResponseEntity<>(categoriaService.buscarCategoriaPorNome(nome, pageable), HttpStatus.OK);
     }
 }

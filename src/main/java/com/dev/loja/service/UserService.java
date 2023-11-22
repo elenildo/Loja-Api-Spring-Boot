@@ -1,15 +1,19 @@
 package com.dev.loja.service;
 
-import com.dev.loja.dto.*;
+import com.dev.loja.dto.EnderecoDtoSaida;
+import com.dev.loja.dto.UserDto;
+import com.dev.loja.dto.UserDtoSaida;
 import com.dev.loja.exception.BadRequestException;
 import com.dev.loja.exception.EntityNotFoundException;
 import com.dev.loja.model.Endereco;
-import com.dev.loja.model.Produto;
 import com.dev.loja.model.User;
 import com.dev.loja.repository.EnderecoRepository;
 import com.dev.loja.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.apache.commons.beanutils.BeanUtilsBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,10 +30,10 @@ public class UserService {
     private EnderecoRepository enderecoRepository;
     private BeanUtilsBean beanUtilsBean;
 
-    public ResponseEntity<?> listarTudo() {
-        return new ResponseEntity<>(userRepository.findAll().stream().map(UserDto::new), HttpStatus.OK);
+    public Page<UserDto> listarTudo(Pageable pageable) {
+        Page<User> users = userRepository.findAll(pageable);
+        return new PageImpl<>(users.stream().map(UserDto::new).toList(), pageable, users.getSize());
     }
-
     public ResponseEntity<?> adicionarEndereco(UserDetails userDetails, Endereco endereco) {
         var user = buscarUsuarioPorLogin(userDetails.getUsername());
 

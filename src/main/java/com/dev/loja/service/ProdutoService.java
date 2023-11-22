@@ -14,6 +14,9 @@ import com.dev.loja.repository.ProdutoRepository;
 import lombok.AllArgsConstructor;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.io.IOUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -39,24 +42,31 @@ public class ProdutoService {
 //    private final String path = System.getProperty("user.dir") + "/upload/produtos/";
     private final String path = "/home/elenildo/apps/loja/imagens/produtos/";
 
-
-    public ResponseEntity<?> listarTudo() {
-        return new ResponseEntity<>(produtoRepository.findAll()
-                .stream().map(produto -> {
+    public Page<ProdutoDtoSaida> listarTudo(Pageable pageable) {
+        Page<Produto> prods = produtoRepository.findAll(pageable);
+        return new PageImpl<>(prods.stream().map(
+                produto -> {
                     produto.setImagens(this.carregarImagemPorProduto(produto));
                     return new ProdutoDtoSaida(produto);
-                }).toList(), HttpStatus.OK);
+                }
+        ).toList(), pageable, prods.getSize());
     }
-    public ResponseEntity<?> listarTudoVitrine() {
-        return new ResponseEntity<>(produtoRepository.findAll()
-                .stream().map(produto -> {
+
+    public Page<ProdutoDtoVitrine> listarTudoVitrine(Pageable pageable) {
+        Page<Produto> prods = produtoRepository.findAll(pageable);
+        return new PageImpl<ProdutoDtoVitrine>(prods.stream().map(
+                produto -> {
                     produto.setImagens(this.carregarImagemPorProduto(produto));
                     return new ProdutoDtoVitrine(produto);
-                }).toList(), HttpStatus.OK);
+                }).toList(), pageable, prods.getSize());
     }
-    public ResponseEntity<?> produtosPorCategoriaNome(String categoria) {
-        return new ResponseEntity<>(produtoRepository.getProdutoByCategoriaNome(categoria)
-                .stream().map(ProdutoDtoSaida::new).toList(), HttpStatus.OK);
+    public Page<ProdutoDtoVitrine> produtosPorCategoriaNome(String categoria, Pageable pageable) {
+        Page<Produto> prods = produtoRepository.getProdutoByCategoriaNome(categoria, pageable);
+        return new PageImpl<>(prods.stream().map(
+                produto -> {
+                    produto.setImagens(this.carregarImagemPorProduto(produto));
+                    return new ProdutoDtoVitrine(produto);
+                }).toList(), pageable, prods.getSize());
     }
     public ResponseEntity<?> novo(ProdutoDtoEntrada produtoDto) {
         var busca = categoriaRepository.findById(produtoDto.categoria.getId());
@@ -121,9 +131,14 @@ public class ProdutoService {
         }
         return buscarPorId(produtoId);
     }
-    public ResponseEntity<?> buscarPorNome(String nome) {
-        return new ResponseEntity<>(produtoRepository.findByNomeContainingIgnoreCase(nome)
-                .stream().map(ProdutoDtoSaida::new).toList(), HttpStatus.OK);
+    public Page<ProdutoDtoSaida> buscarPorNome(String nome, Pageable pageable) {
+        Page<Produto> prods = produtoRepository.findByNomeContainingIgnoreCase(nome, pageable);
+        return new PageImpl<>(prods.stream().map(
+                produto -> {
+                    produto.setImagens(this.carregarImagemPorProduto(produto));
+                    return new ProdutoDtoSaida(produto);
+                }
+        ).toList(), pageable, prods.getSize());
     }
     public ResponseEntity<?> editar(ProdutoDtoEntrada produto, Long id) throws InvocationTargetException, IllegalAccessException {
         var prod = buscarProdutoPorId(id);
@@ -152,5 +167,6 @@ public class ProdutoService {
         });
         return produto.getImagens();
     }
+
 
 }

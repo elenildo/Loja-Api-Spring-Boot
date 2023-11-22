@@ -21,12 +21,10 @@ public class PerfilController {
     public ResponseEntity<?> perfil(){
         return userService.mostrarPerfil();
     }
-
     @PostMapping("endereco")
     public ResponseEntity<?> adicionarEndereco(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody Endereco endereco){
         return userService.adicionarEndereco(userDetails, endereco);
     }
-
     @PatchMapping("endereco/{id}")
     public ResponseEntity<?> editarEndereco(@AuthenticationPrincipal UserDetails userDetails, @RequestBody Endereco endereco, @PathVariable Long id) throws InvocationTargetException, IllegalAccessException {
         return userService.editarEndereco(userDetails, endereco, id);

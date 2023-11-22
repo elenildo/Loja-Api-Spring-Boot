@@ -26,9 +26,7 @@ public class UserDtoSaida extends RepresentationModel<UserDtoSaida> {
             this.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class)
                     .buscarPorId(user.getId())).withSelfRel());
             this.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UserController.class)
-                    .listarTudo()).withRel(IanaLinkRelations.COLLECTION));
+                    .listarTudo(null)).withRel(IanaLinkRelations.COLLECTION));
         }
-
-
     }
 }

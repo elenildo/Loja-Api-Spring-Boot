@@ -32,7 +32,7 @@ public class ProdutoDtoVitrine extends RepresentationModel<ProdutoDtoVitrine> {
         this.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(VitrineController.class)
                         .buscarPorId(produto.getId())).withSelfRel());
         this.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(VitrineController.class)
-                        .home()).withRel(IanaLinkRelations.COLLECTION));
+                        .home(null)).withRel(IanaLinkRelations.COLLECTION));
 
     }
 

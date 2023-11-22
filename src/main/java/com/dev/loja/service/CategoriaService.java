@@ -7,6 +7,9 @@ import com.dev.loja.exception.EntityNotFoundException;
 import com.dev.loja.model.Categoria;
 import com.dev.loja.repository.CategoriaRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,8 +19,14 @@ import org.springframework.stereotype.Service;
 public class CategoriaService {
     private CategoriaRepository categoriaRepository;
 
-    public ResponseEntity<?> listarTudo() {
-        return new ResponseEntity<>(categoriaRepository.findAll().stream().map(CategoriaDtoSaida::new), HttpStatus.OK);
+//    public ResponseEntity<?> listarTudo() {
+//        return new ResponseEntity<>(categoriaRepository.findAll().stream().map(CategoriaDtoSaida::new), HttpStatus.OK);
+//    }
+    public Page<CategoriaDtoSaida> listarTudo(Pageable pageable) {
+        Page<Categoria> cats = categoriaRepository.findAll(pageable);
+        return new PageImpl<>(cats.stream().map(
+                CategoriaDtoSaida::new
+        ).toList(), pageable, cats.getSize());
     }
 
     public ResponseEntity<?> novo(CategoriaDto categoriaDto) {
@@ -48,8 +57,16 @@ public class CategoriaService {
 
         return busca.get();
     }
-
-    public ResponseEntity<?> buscarCategoriaPorNome(String nome) {
-        return new ResponseEntity<>(categoriaRepository.findByNomeContaining(nome), HttpStatus.OK);
+    public Page<CategoriaDtoSaida> buscarCategoriaPorNome(String nome, Pageable pageable) {
+        Page<Categoria> cats = categoriaRepository.findByNomeContaining(nome, pageable);
+        return new PageImpl<>(cats.stream().map(
+                CategoriaDtoSaida::new
+        ).toList(), pageable, cats.getSize());
     }
+
+//    public ResponseEntity<?> buscarCategoriaPorNome(String nome) {
+//        return new ResponseEntity<>(categoriaRepository.findByNomeContaining(nome), HttpStatus.OK);
+//    }
+
+
 }

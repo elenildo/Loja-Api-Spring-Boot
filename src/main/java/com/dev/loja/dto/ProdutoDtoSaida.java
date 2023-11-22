@@ -35,7 +35,7 @@ public class ProdutoDtoSaida extends RepresentationModel<ProdutoDtoSaida> {
         this.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ProdutoController.class)
                         .buscarPorId(produto.getId())).withSelfRel());
         this.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(ProdutoController.class)
-                        .listarTudo()).withRel(IanaLinkRelations.COLLECTION));
+                        .listarTudo(null)).withRel(IanaLinkRelations.COLLECTION));
     }
 
 }

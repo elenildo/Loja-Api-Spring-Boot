@@ -18,6 +18,6 @@ public class CategoriaDtoSaida extends RepresentationModel<CategoriaDtoSaida> {
         this.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CategoriaController.class)
                 .buscarPorId(categoria.getId())).withSelfRel());
         this.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(CategoriaController.class)
-                .listarTudo()).withRel(IanaLinkRelations.COLLECTION));
+                .listarTudo(null)).withRel(IanaLinkRelations.COLLECTION));
     }
 }
