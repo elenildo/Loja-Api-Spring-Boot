@@ -49,16 +49,16 @@ public class ProdutoService {
                     produto.setImagens(this.carregarImagemPorProduto(produto));
                     return new ProdutoDtoSaida(produto);
                 }
-        ).toList(), pageable, prods.getSize());
+        ).toList(), pageable, prods.getTotalElements());
     }
 
     public Page<ProdutoDtoVitrine> listarTudoVitrine(Pageable pageable) {
         Page<Produto> prods = produtoRepository.findAll(pageable);
-        return new PageImpl<ProdutoDtoVitrine>(prods.stream().map(
+        return new PageImpl<>(prods.stream().map(
                 produto -> {
                     produto.setImagens(this.carregarImagemPorProduto(produto));
                     return new ProdutoDtoVitrine(produto);
-                }).toList(), pageable, prods.getSize());
+                }).toList(), pageable, prods.getTotalElements());
     }
     public Page<ProdutoDtoVitrine> produtosPorCategoriaNome(String categoria, Pageable pageable) {
         Page<Produto> prods = produtoRepository.getProdutoByCategoriaNome(categoria, pageable);
@@ -66,7 +66,7 @@ public class ProdutoService {
                 produto -> {
                     produto.setImagens(this.carregarImagemPorProduto(produto));
                     return new ProdutoDtoVitrine(produto);
-                }).toList(), pageable, prods.getSize());
+                }).toList(), pageable, prods.getTotalElements());
     }
     public ResponseEntity<?> novo(ProdutoDtoEntrada produtoDto) {
         var busca = categoriaRepository.findById(produtoDto.categoria.getId());
@@ -138,7 +138,7 @@ public class ProdutoService {
                     produto.setImagens(this.carregarImagemPorProduto(produto));
                     return new ProdutoDtoSaida(produto);
                 }
-        ).toList(), pageable, prods.getSize());
+        ).toList(), pageable, prods.getTotalElements());
     }
     public ResponseEntity<?> editar(ProdutoDtoEntrada produto, Long id) throws InvocationTargetException, IllegalAccessException {
         var prod = buscarProdutoPorId(id);

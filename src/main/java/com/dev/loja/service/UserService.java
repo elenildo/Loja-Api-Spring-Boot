@@ -32,7 +32,7 @@ public class UserService {
 
     public Page<UserDto> listarTudo(Pageable pageable) {
         Page<User> users = userRepository.findAll(pageable);
-        return new PageImpl<>(users.stream().map(UserDto::new).toList(), pageable, users.getSize());
+        return new PageImpl<>(users.stream().map(UserDto::new).toList(), pageable, users.getTotalElements());
     }
     public ResponseEntity<?> adicionarEndereco(UserDetails userDetails, Endereco endereco) {
         var user = buscarUsuarioPorLogin(userDetails.getUsername());

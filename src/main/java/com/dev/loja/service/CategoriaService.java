@@ -19,14 +19,11 @@ import org.springframework.stereotype.Service;
 public class CategoriaService {
     private CategoriaRepository categoriaRepository;
 
-//    public ResponseEntity<?> listarTudo() {
-//        return new ResponseEntity<>(categoriaRepository.findAll().stream().map(CategoriaDtoSaida::new), HttpStatus.OK);
-//    }
     public Page<CategoriaDtoSaida> listarTudo(Pageable pageable) {
         Page<Categoria> cats = categoriaRepository.findAll(pageable);
         return new PageImpl<>(cats.stream().map(
                 CategoriaDtoSaida::new
-        ).toList(), pageable, cats.getSize());
+        ).toList(), pageable, cats.getTotalElements());
     }
 
     public ResponseEntity<?> novo(CategoriaDto categoriaDto) {
@@ -61,12 +58,6 @@ public class CategoriaService {
         Page<Categoria> cats = categoriaRepository.findByNomeContaining(nome, pageable);
         return new PageImpl<>(cats.stream().map(
                 CategoriaDtoSaida::new
-        ).toList(), pageable, cats.getSize());
+        ).toList(), pageable, cats.getTotalElements());
     }
-
-//    public ResponseEntity<?> buscarCategoriaPorNome(String nome) {
-//        return new ResponseEntity<>(categoriaRepository.findByNomeContaining(nome), HttpStatus.OK);
-//    }
-
-
 }
