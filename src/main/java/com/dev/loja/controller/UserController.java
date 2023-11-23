@@ -28,7 +28,7 @@ public class UserController {
         return userService.alterarUser(userDto);
     }
     @PostMapping("busca")
-    public ResponseEntity<?> buscarPorLogin(@RequestParam String email){
-        return userService.buscarUsuarioPorEmail(email);
+    public ResponseEntity<?> buscarPorLogin(@RequestParam String email, Pageable pageable){
+        return new ResponseEntity<>(userService.buscarUsuarioPorEmail(email, pageable), HttpStatus.OK);
     }
 }

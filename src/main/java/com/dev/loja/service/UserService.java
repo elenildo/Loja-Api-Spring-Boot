@@ -71,9 +71,9 @@ public class UserService {
         return new ResponseEntity<>(new UserDtoSaida(userRepository.save(usuario)), HttpStatus.OK);
     }
 
-    public ResponseEntity<?> buscarUsuarioPorEmail(String email) {
-        var busca = userRepository.findByLoginContaining(email);
-        return new ResponseEntity<>(busca.stream().map(UserDto::new).toList(), HttpStatus.OK);
+    public Page<UserDto> buscarUsuarioPorEmail(String email, Pageable pageable) {
+        var busca = userRepository.findByLoginContaining(email, pageable);
+        return new PageImpl<>(busca.stream().map(UserDto::new).toList(), pageable, busca.getTotalElements());
     }
 
     private User buscarUsuarioPorLogin(String login) {
