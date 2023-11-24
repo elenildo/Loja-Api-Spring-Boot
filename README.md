@@ -12,5 +12,6 @@ Foram usados no projeto os seguintes recursos:
 - Tratamento de exceções com retorno personalizado de mensagens
 - Hateoas
 - Upload e Download de imagens
+- Paginação
 
 A aplicação está incompleta mas pode servir de guia para outros projetos. Vou atualizando conforme novas features forem adicionadas ;)
