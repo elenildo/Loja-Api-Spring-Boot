@@ -8,6 +8,7 @@ import com.dev.loja.repository.ProdutoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,7 +21,7 @@ public class LancamentoService {
     private LancamentoRepository lancamentoRepository;
     private ProdutoRepository produtoRepository;
 
-    public ResponseEntity<?> lancarProduto(Lancamento lancamento) {
+    public ResponseEntity<?> lancarProduto(Lancamento lancamento, UserDetails userDetails) {
         var produto = buscarProdutoPorId(lancamento.getProduto().getId());
 
         if(lancamento.getQuantidade() > 0 ){
@@ -34,6 +35,7 @@ public class LancamentoService {
                 lanc.setProduto(lancamento.getProduto());
                 lanc.setDataLancamento(LocalDateTime.now());
                 lanc.setCodigoBarras(lancamento.getCodigoBarras());
+                lanc.setResponsavel(userDetails.getUsername());
                 lancamentos.add(lanc);
                 produto.setEstoqueAtual(produto.getEstoqueAtual() + 1);
             }

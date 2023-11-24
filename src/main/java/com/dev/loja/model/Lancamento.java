@@ -28,4 +28,6 @@ public class Lancamento {
 
     private ProdutoStatus produtoStatus = ProdutoStatus.DISPONIVEL;
 
+    private String responsavel;
+
 }
