@@ -17,6 +17,7 @@ public class ProdutoDtoSaida extends RepresentationModel<ProdutoDtoSaida> {
     public String precoVenda;
     public String estoqueAtual;
     public String estoqueMinimo;
+    public Boolean destaque;
     @Lob
     public String descricao;
     public Boolean ativo;
@@ -29,6 +30,7 @@ public class ProdutoDtoSaida extends RepresentationModel<ProdutoDtoSaida> {
         this.precoVenda = produto.getPrecoVenda().toString();
         this.estoqueAtual = String.valueOf(produto.getEstoqueAtual());
         this.estoqueMinimo = String.valueOf(produto.getEstoqueMinimo());
+        this.destaque = produto.getDestaque();
         this.descricao = produto.getDescricao();
         this.ativo = produto.getAtivo();
         this.imagens = produto.getImagens().stream().map(ImagemDtoSaida::new).toList();

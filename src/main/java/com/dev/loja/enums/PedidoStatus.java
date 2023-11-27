@@ -1,5 +1,5 @@
 package com.dev.loja.enums;
 
 public enum PedidoStatus {
-    FECHADO, PAGO, CANCELADO
+    PENDENTE, PAGO, ENVIADO, CANCELADO
 }

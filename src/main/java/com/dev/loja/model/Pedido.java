@@ -1,9 +1,11 @@
 package com.dev.loja.model;
 
+import com.dev.loja.dto.PedidoDtoEntrada;
 import com.dev.loja.enums.FormaPagamento;
 import com.dev.loja.enums.PedidoStatus;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -12,6 +14,7 @@ import java.util.List;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,5 +32,9 @@ public class Pedido {
     private LocalDateTime data;
     @Transient
     private String cep;
+
+    public Pedido(PedidoDtoEntrada pedidoDtoEntrada){
+        this.pedidoStatus = pedidoDtoEntrada.pedidoStatus();
+    }
 
 }

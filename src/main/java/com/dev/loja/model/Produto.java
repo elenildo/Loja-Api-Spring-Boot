@@ -29,6 +29,7 @@ public class Produto {
     private BigDecimal precoVenda;
     private Integer estoqueAtual = 0;
     private Integer estoqueMinimo = 0;
+    private Boolean destaque = true;
     @Lob
     private String descricao;
     private Boolean ativo = true;
@@ -37,6 +38,7 @@ public class Produto {
         this.categoria = produtoDtoEntrada.categoria;
         this.nome = produtoDtoEntrada.nome.trim();
         this.descricao = produtoDtoEntrada.descricao;
+        this.destaque = produtoDtoEntrada.destaque;
         this.estoqueMinimo = produtoDtoEntrada.estoqueMinimo;
         this.precoCompra = produtoDtoEntrada.precoCompra;
         this.precoVenda = produtoDtoEntrada.precoVenda;

@@ -105,7 +105,7 @@ public class VendaService {
         pedido.setDescontos(descontos);
         totalPedido = totalPedido.add(pedido.getFrete()).subtract(descontos);
         pedido.setTotal(totalPedido);
-        pedido.setPedidoStatus(PedidoStatus.FECHADO);
+        pedido.setPedidoStatus(PedidoStatus.PENDENTE);
 
         if(pedido.getNumero() !=null){
             var pedidoSalvo = vendaRepository.save(pedido);
