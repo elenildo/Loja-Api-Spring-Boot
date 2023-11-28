@@ -1,5 +1,6 @@
 package com.dev.loja.service;
 
+import com.dev.loja.beans.EmailSender;
 import com.dev.loja.beans.Util;
 import com.dev.loja.dto.CarrinhoDto;
 import com.dev.loja.dto.CarrinhoItem;
@@ -32,7 +33,7 @@ public class VendaService {
     private ItemPedidoRepository itemPedidoRepository;
     private ProdutoRepository produtoRepository;
     private LancamentoRepository lancamentoRepository;
-
+    private EmailSender emailSender;
 
     public ResponseEntity<?> fecharPedido(@Valid CarrinhoDto carrinho, UserDetails userDetails) {
 
@@ -63,10 +64,10 @@ public class VendaService {
         if(userDetails != null) {
             vendaRepository.save(pedido);
         }
-        return this.adicionarItens(pedido, carrinho.itens());
+        return this.adicionarItens(pedido, carrinho.itens(), userDetails);
     }
 
-    private ResponseEntity<?> adicionarItens(Pedido pedido, List<CarrinhoItem> itens) {
+    private ResponseEntity<?> adicionarItens(Pedido pedido, List<CarrinhoItem> itens, UserDetails userDetails) {
         BigDecimal totalPedido = BigDecimal.ZERO;
         var itensDuplicadosRemovidos = this.somaRepetidos(itens);
         if(itensDuplicadosRemovidos.isEmpty())
@@ -109,10 +110,10 @@ public class VendaService {
 
         if(pedido.getNumero() !=null){
             var pedidoSalvo = vendaRepository.save(pedido);
+//            emailSender.sendOrder(userDetails.getUsername(), pedido);
             return new ResponseEntity<>(new PedidoDtoSaida(pedidoSalvo), HttpStatus.CREATED);
         }
         return new ResponseEntity<>(new PedidoDtoSaida(pedido), HttpStatus.CREATED);
-
 
     }
 
