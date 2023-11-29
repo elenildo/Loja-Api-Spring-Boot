@@ -7,6 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.net.ConnectException;
 import java.time.Instant;
 
 @RestControllerAdvice
@@ -43,6 +44,7 @@ public class CustomExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
+
     @ExceptionHandler(CustomJwtVerificationException.class)
     public ResponseEntity<?> jwtFail(CustomJwtVerificationException e, HttpServletRequest request){
         DefaultError error = this.exceptionBodyBuider(e, request);
@@ -50,6 +52,7 @@ public class CustomExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
     }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> validationFields(MethodArgumentNotValidException e, HttpServletRequest request){
         ValidationError error = new ValidationError();
@@ -63,6 +66,17 @@ public class CustomExceptionHandler {
         });
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(ConnectException.class)
+    public ResponseEntity<?> sendEmail(ConnectException e, HttpServletRequest request){
+        DefaultError error = new DefaultError();
+        error.setTimestamp(Instant.now());
+        error.setPath(request.getRequestURI());
+        error.setMessage("Erro ao enviar e-mail");
+        error.setStatus(HttpStatus.FAILED_DEPENDENCY.value());
+
+        return ResponseEntity.status(HttpStatus.FAILED_DEPENDENCY).body(error);
     }
 
     private DefaultError exceptionBodyBuider(RuntimeException e, HttpServletRequest request){

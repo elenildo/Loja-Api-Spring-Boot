@@ -31,6 +31,7 @@ public class Produto {
     private Integer estoqueMinimo = 0;
     private Boolean destaque = true;
     @Lob
+    @Column(columnDefinition = "TEXT")
     private String descricao;
     private Boolean ativo = true;
 
