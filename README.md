@@ -13,5 +13,6 @@ Foram usados no projeto os seguintes recursos:
 - Hateoas
 - Upload e Download de imagens
 - Paginação
+- Integração com micro service de envio de e-mails
 
 A aplicação está incompleta mas pode servir de guia para outros projetos. Vou atualizando conforme novas features forem adicionadas ;)
