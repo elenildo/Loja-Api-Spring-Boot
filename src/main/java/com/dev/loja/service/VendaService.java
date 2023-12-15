@@ -112,7 +112,7 @@ public class VendaService {
 
         if(pedido.getNumero() !=null){
             var pedidoSalvo = vendaRepository.save(pedido);
-            // emailSender.sendOrder(userDetails.getUsername(), pedido); //Api externa
+            // emailSender.sendOrder(userDetails.getUsername(), pedido); //Descomentar se a Send-Mail-Api estiver UP
             return new ResponseEntity<>(new PedidoDtoSaida(pedidoSalvo), HttpStatus.CREATED);
         }
         return new ResponseEntity<>(new PedidoDtoSaida(pedido), HttpStatus.CREATED);
