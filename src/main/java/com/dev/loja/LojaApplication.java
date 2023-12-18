@@ -6,11 +6,13 @@ import com.dev.loja.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Optional;
 
 @SpringBootApplication
+@EnableCaching
 public class LojaApplication implements CommandLineRunner {
 	private UserRepository userRepository;
 

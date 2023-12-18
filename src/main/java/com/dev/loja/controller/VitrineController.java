@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class VitrineController {
     private ProdutoService produtoService;
 
+    @GetMapping("home/busca/{nome}")
+    public ResponseEntity<?> buscarProdutosPorNome(@PathVariable String nome, Pageable pageable){
+        return new ResponseEntity<>(produtoService.buscarPorNome(nome, pageable), HttpStatus.OK);
+    }
     @GetMapping
     public ResponseEntity<?> index(Pageable pageable){
         return home(pageable);
@@ -28,6 +32,8 @@ public class VitrineController {
     public ResponseEntity<?> buscarPorId(@PathVariable Long id){
         return produtoService.buscarPorIdHome(id);
     }
+
+
     @GetMapping("home/{categoria}")
     public ResponseEntity<?> produtosPorCategoria(@PathVariable String categoria, Pageable pageable){
         return new ResponseEntity<>(produtoService.produtosPorCategoriaNome(categoria, pageable), HttpStatus.OK);

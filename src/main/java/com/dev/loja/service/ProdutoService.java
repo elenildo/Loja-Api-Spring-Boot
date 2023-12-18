@@ -131,8 +131,8 @@ public class ProdutoService {
         }
         return buscarPorId(produtoId);
     }
-    public Page<ProdutoDtoSaida> buscarPorNome(String nome, Pageable pageable) {
-        Page<Produto> prods = produtoRepository.findByNomeContainingIgnoreCase(nome, pageable);
+    public Page<ProdutoDtoSaida> buscarPorNome(String busca, Pageable pageable) {
+        Page<Produto> prods = produtoRepository.findByNomeContainingIgnoreCase(busca, pageable);
         return new PageImpl<>(prods.stream().map(
                 produto -> {
                     produto.setImagens(this.carregarImagemPorProduto(produto));
