@@ -18,6 +18,7 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
+@Table(name = "usuarios")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +33,7 @@ public class User implements UserDetails {
     private String password;
     private UserRole role;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Endereco> enderecos = new ArrayList<>();
 
     public User(String nome, String sobrenome, String login, String password, UserRole role){

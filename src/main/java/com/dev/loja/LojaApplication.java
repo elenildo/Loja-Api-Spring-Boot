@@ -40,6 +40,7 @@ public class LojaApplication implements CommandLineRunner {
 			newUser.setRole(UserRole.ADMIN);
 			userRepository.save(newUser);
 			System.out.println("***** O administrador foi criado *****");
+			System.out.println("***** Logar com o usuário 'admin@teste.com' e senha '123123' *****");
 		}
 	}
 }

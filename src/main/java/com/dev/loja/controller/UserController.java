@@ -19,14 +19,17 @@ public class UserController {
     public ResponseEntity<?> listarTudo(Pageable pageable){
         return new ResponseEntity<>(userService.listarTudo(pageable), HttpStatus.OK);
     }
+
     @GetMapping("{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable Long id){
         return userService.buscarPorId(id);
     }
+
     @PostMapping("roles")
     public ResponseEntity<?> alterarUser(@RequestBody @Valid UserDto userDto){
         return userService.alterarUser(userDto);
     }
+
     @PostMapping("busca")
     public ResponseEntity<?> buscarPorLogin(@RequestParam String email, Pageable pageable){
         return new ResponseEntity<>(userService.buscarUsuarioPorEmail(email, pageable), HttpStatus.OK);
