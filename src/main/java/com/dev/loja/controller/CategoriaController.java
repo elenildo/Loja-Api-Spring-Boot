@@ -22,15 +22,15 @@ public class CategoriaController {
 
     @PostMapping
     public ResponseEntity<?> novo(@RequestBody @Valid CategoriaDto categoriaDto){
-        return categoriaService.novo(categoriaDto);
+        return new ResponseEntity<>(categoriaService.novo(categoriaDto), HttpStatus.CREATED);
     }
     @PutMapping("{id}")
     public ResponseEntity<?> editar(@PathVariable Long id, @RequestBody @Valid CategoriaDto categoriaDto){
-        return categoriaService.editar(id, categoriaDto);
+        return new ResponseEntity<>(categoriaService.editar(id, categoriaDto), HttpStatus.OK);
     }
     @GetMapping("{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable Long id){
-        return categoriaService.buscarPorId(id);
+        return new ResponseEntity<>(categoriaService.buscarPorId(id), HttpStatus.OK);
     }
     @PostMapping("busca")
     public ResponseEntity<?> buscarPorNome(@RequestParam String nome, Pageable pageable){

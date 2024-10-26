@@ -22,12 +22,12 @@ public class UserController {
 
     @GetMapping("{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable Long id){
-        return userService.buscarPorId(id);
+        return new ResponseEntity<>(userService.buscarPorId(id), HttpStatus.OK);
     }
 
     @PostMapping("roles")
     public ResponseEntity<?> alterarUser(@RequestBody @Valid UserDto userDto){
-        return userService.alterarUser(userDto);
+        return new ResponseEntity<>(userService.alterarUser(userDto), HttpStatus.OK);
     }
 
     @PostMapping("busca")

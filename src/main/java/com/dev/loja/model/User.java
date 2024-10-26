@@ -1,11 +1,14 @@
 package com.dev.loja.model;
 
 import com.dev.loja.enums.UserRole;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,9 +17,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-
+@Getter
+@Setter
 @Entity
-@Data
 @NoArgsConstructor
 @Table(name = "usuarios")
 public class User implements UserDetails {
@@ -34,7 +37,7 @@ public class User implements UserDetails {
     private UserRole role;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private List<Endereco> enderecos = new ArrayList<>();
+    private List<Endereco> enderecos;
 
     public User(String nome, String sobrenome, String login, String password, UserRole role){
         this.nome = nome;

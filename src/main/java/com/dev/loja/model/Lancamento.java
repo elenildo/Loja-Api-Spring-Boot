@@ -3,11 +3,16 @@ package com.dev.loja.model;
 import com.dev.loja.enums.ProdutoStatus;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 public class Lancamento {
 
     @Id

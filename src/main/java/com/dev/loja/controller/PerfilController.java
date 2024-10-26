@@ -4,6 +4,7 @@ import com.dev.loja.model.Endereco;
 import com.dev.loja.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,16 +20,16 @@ public class PerfilController {
 
     @GetMapping("")
     public ResponseEntity<?> perfil(){
-        return userService.mostrarPerfil();
+        return new ResponseEntity<>(userService.mostrarPerfil(), HttpStatus.OK);
     }
 
     @PostMapping("endereco")
     public ResponseEntity<?> adicionarEndereco(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody Endereco endereco){
-        return userService.adicionarEndereco(userDetails, endereco);
+        return new ResponseEntity<>(userService.adicionarEndereco(userDetails, endereco), HttpStatus.OK);
     }
 
     @PatchMapping("endereco/{id}")
     public ResponseEntity<?> editarEndereco(@AuthenticationPrincipal UserDetails userDetails, @RequestBody Endereco endereco, @PathVariable Long id) throws InvocationTargetException, IllegalAccessException {
-        return userService.editarEndereco(userDetails, endereco, id);
+        return new ResponseEntity<>(userService.editarEndereco(userDetails, endereco, id), HttpStatus.OK);
     }
 }

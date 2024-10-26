@@ -6,6 +6,7 @@ import com.dev.loja.dto.RegisterDTO;
 import com.dev.loja.service.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,13 +18,13 @@ public class AuthenticationController {
     private TokenService tokenService;
 
     @PostMapping("login")
-    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data){
-        return authenticationService.login(data);
+    public ResponseEntity<?> login(@RequestBody @Valid AuthenticationDTO data){
+        return new ResponseEntity<>(authenticationService.login(data), HttpStatus.OK);
     }
 
     @PostMapping("register")
-    public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
-        return authenticationService.register(data);
+    public ResponseEntity<?> register(@RequestBody @Valid RegisterDTO data){
+        return new ResponseEntity<>(authenticationService.register(data), HttpStatus.OK);
     }
 
     @GetMapping("/")

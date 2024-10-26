@@ -4,6 +4,7 @@ import com.dev.loja.controller.UserController;
 import com.dev.loja.enums.UserRole;
 import com.dev.loja.model.Endereco;
 import com.dev.loja.model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.NoArgsConstructor;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.RepresentationModel;

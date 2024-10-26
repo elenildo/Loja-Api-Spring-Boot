@@ -14,8 +14,6 @@ import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -34,16 +32,16 @@ public class UserService {
         Page<User> users = userRepository.findAll(pageable);
         return new PageImpl<>(users.stream().map(UserDto::new).toList(), pageable, users.getTotalElements());
     }
-    public ResponseEntity<?> adicionarEndereco(UserDetails userDetails, Endereco endereco) {
+    public EnderecoDtoSaida adicionarEndereco(UserDetails userDetails, Endereco endereco) {
         var user = buscarUsuarioPorLogin(userDetails.getUsername());
 
         if(endereco.getPrincipal()) enderecoRepository.desativarEnderecos(user.getId());
-
         endereco.setUser(user);
-        return new ResponseEntity<>(new EnderecoDtoSaida(enderecoRepository.save(endereco)), HttpStatus.OK);
+        enderecoRepository.save(endereco);
+        return new EnderecoDtoSaida(endereco);
     }
 
-    public ResponseEntity<?> editarEndereco(UserDetails userDetails, Endereco endereco, Long id) throws InvocationTargetException, IllegalAccessException {
+    public EnderecoDtoSaida editarEndereco(UserDetails userDetails, Endereco endereco, Long id) throws InvocationTargetException, IllegalAccessException {
         var user = buscarUsuarioPorLogin(userDetails.getUsername());
         var end = buscarEnderecoPorId(id);
 
@@ -53,22 +51,22 @@ public class UserService {
         if(endereco.getPrincipal()) enderecoRepository.desativarEnderecos(user.getId());
 
         beanUtilsBean.copyProperties(end, endereco);
-        return new ResponseEntity<>(new EnderecoDtoSaida(enderecoRepository.save(end)), HttpStatus.OK);
+        return new EnderecoDtoSaida(enderecoRepository.save(end));
     }
 
-    public ResponseEntity<?> buscarPorId(Long id) {
+    public UserDtoSaida buscarPorId(Long id) {
         var busca = userRepository.findById(id);
         if(busca.isEmpty())
            throw new EntityNotFoundException("Usuário não encontrado");
 
-        return new ResponseEntity<>(new UserDtoSaida(busca.get()), HttpStatus.OK);
+        return new UserDtoSaida(busca.get());
     }
 
-    public ResponseEntity<?> alterarUser(UserDto user) {
+    public UserDtoSaida alterarUser(UserDto user) {
         var usuario = buscarUsuarioPorLogin(user.usuarioEmail);
 
         usuario.setRole(user.papel);
-        return new ResponseEntity<>(new UserDtoSaida(userRepository.save(usuario)), HttpStatus.OK);
+        return new UserDtoSaida(userRepository.save(usuario));
     }
 
     public Page<UserDto> buscarUsuarioPorEmail(String email, Pageable pageable) {
@@ -90,8 +88,8 @@ public class UserService {
         return busca.get();
     }
 
-    public ResponseEntity<?> mostrarPerfil() {
+    public UserDtoSaida mostrarPerfil() {
         var usuario = buscarUsuarioPorLogin(SecurityContextHolder.getContext().getAuthentication().getName());
-        return new ResponseEntity<>(new UserDtoSaida(usuario), HttpStatus.OK);
+        return new UserDtoSaida(usuario);
     }
 }

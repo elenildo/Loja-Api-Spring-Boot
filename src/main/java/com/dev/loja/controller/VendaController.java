@@ -4,7 +4,6 @@ import com.dev.loja.dto.CarrinhoDto;
 import com.dev.loja.service.VendaService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,6 +19,6 @@ public class VendaController {
     @PostMapping
     public ResponseEntity<?> fecharPedido(@AuthenticationPrincipal UserDetails userDetails,
                                           @RequestBody @Valid CarrinhoDto carrinho){
-        return vendaService.fecharPedido(carrinho, userDetails);
+        return new ResponseEntity<>(vendaService.fecharPedido(carrinho, userDetails), HttpStatus.CREATED);
     }
 }

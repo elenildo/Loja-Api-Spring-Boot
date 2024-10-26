@@ -26,25 +26,25 @@ public class CategoriaService {
         ).toList(), pageable, cats.getTotalElements());
     }
 
-    public ResponseEntity<?> novo(CategoriaDto categoriaDto) {
+    public CategoriaDtoSaida novo(CategoriaDto categoriaDto) {
             var busca = categoriaRepository.findByNome(categoriaDto.nome().trim());
             if(busca.isPresent())
                 throw new DuplicatedEntityException("Erro: Já existe a categoria '"+categoriaDto.nome()+"'");
             var categ = categoriaRepository.save(new Categoria(categoriaDto));
 
-        return new ResponseEntity<>(new CategoriaDtoSaida(categ), HttpStatus.CREATED);
+        return new CategoriaDtoSaida(categ);
     }
 
-    public ResponseEntity<?> buscarPorId(Long id) {
+    public CategoriaDtoSaida buscarPorId(Long id) {
         var categoria = buscarCategoriaPorId(id);
-        return new ResponseEntity<>(new CategoriaDtoSaida(categoria), HttpStatus.OK);
+        return new CategoriaDtoSaida(categoria);
     }
 
-    public ResponseEntity<?> editar(Long id, CategoriaDto categoriaDto) {
+    public CategoriaDtoSaida editar(Long id, CategoriaDto categoriaDto) {
         var categoria = buscarCategoriaPorId(id);
         categoria.setNome(categoriaDto.nome());
         categoriaRepository.save(categoria);
-        return new ResponseEntity<>(new CategoriaDtoSaida(categoria), HttpStatus.OK);
+        return new CategoriaDtoSaida(categoria);
     }
 
     private Categoria buscarCategoriaPorId(Long id){

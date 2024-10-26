@@ -8,7 +8,6 @@ import com.dev.loja.dto.PedidoDtoSaida;
 import com.dev.loja.enums.PedidoStatus;
 import com.dev.loja.enums.ProdutoStatus;
 import com.dev.loja.exception.BadRequestException;
-import com.dev.loja.exception.EmailSenderException;
 import com.dev.loja.exception.EntityNotFoundException;
 import com.dev.loja.model.ItemPedido;
 import com.dev.loja.model.Lancamento;
@@ -23,7 +22,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.net.ConnectException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -37,7 +35,7 @@ public class VendaService {
     private LancamentoRepository lancamentoRepository;
     private EmailSender emailSender;
 
-    public ResponseEntity<?> fecharPedido(@Valid CarrinhoDto carrinho, UserDetails userDetails) {
+    public PedidoDtoSaida fecharPedido(@Valid CarrinhoDto carrinho, UserDetails userDetails) {
 
         if(carrinho.itens().isEmpty())
             throw new BadRequestException("Nenhum item foi adicionado ao carrinho");
@@ -69,7 +67,7 @@ public class VendaService {
         return this.adicionarItens(pedido, carrinho.itens(), userDetails);
     }
 
-    private ResponseEntity<?> adicionarItens(Pedido pedido, List<CarrinhoItem> itens, UserDetails userDetails) {
+    private PedidoDtoSaida adicionarItens(Pedido pedido, List<CarrinhoItem> itens, UserDetails userDetails) {
         BigDecimal totalPedido = BigDecimal.ZERO;
         var itensDuplicadosRemovidos = this.somaRepetidos(itens);
         if(itensDuplicadosRemovidos.isEmpty())
@@ -113,9 +111,9 @@ public class VendaService {
         if(pedido.getNumero() !=null){
             var pedidoSalvo = vendaRepository.save(pedido);
             // emailSender.sendOrder(userDetails.getUsername(), pedido); //Descomentar se a Send-Mail-Api estiver UP
-            return new ResponseEntity<>(new PedidoDtoSaida(pedidoSalvo), HttpStatus.CREATED);
+            return new PedidoDtoSaida(pedidoSalvo);
         }
-        return new ResponseEntity<>(new PedidoDtoSaida(pedido), HttpStatus.CREATED);
+        return new PedidoDtoSaida(pedido);
 
     }
 
