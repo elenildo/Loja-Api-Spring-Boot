@@ -60,6 +60,7 @@ public class ProdutoService {
                     return new ProdutoDtoVitrine(produto);
                 }).toList(), pageable, prods.getTotalElements());
     }
+
     public Page<ProdutoDtoVitrine> produtosPorCategoriaNome(String categoria, Pageable pageable) {
         Page<Produto> prods = produtoRepository.getProdutoByCategoriaNome(categoria, pageable);
         return new PageImpl<>(prods.stream().map(
@@ -68,6 +69,7 @@ public class ProdutoService {
                     return new ProdutoDtoVitrine(produto);
                 }).toList(), pageable, prods.getTotalElements());
     }
+
     public ResponseEntity<?> novo(ProdutoDtoEntrada produtoDto) {
         var busca = categoriaRepository.findById(produtoDto.categoria.getId());
         if(busca.isEmpty())
@@ -76,15 +78,18 @@ public class ProdutoService {
 
         return new ResponseEntity<>(produtoRepository.save(new Produto(produtoDto)), HttpStatus.CREATED);
     }
+
     public ResponseEntity<?> buscarPorId(Long id) {
         var produto = buscarProdutoPorId(id);
         return new ResponseEntity<>(new ProdutoDtoSaida(produto), HttpStatus.OK);
     }
+
     public ResponseEntity<?> buscarPorIdHome(Long id) { //home
         var produto = buscarProdutoPorId(id);
         produto.setImagens(this.carregarImagemPorProduto(produto));
         return new ResponseEntity<>(new ProdutoDtoVitrine(produto), HttpStatus.OK);
     }
+
     public ResponseEntity<?> adicionarImagens(Long id, MultipartFile[] files) {
         List<String> contentTypes = Arrays.asList("image/png", "image/jpeg", "image/gif");
         for(MultipartFile file : files){
@@ -116,6 +121,7 @@ public class ProdutoService {
 
         return new ResponseEntity<>(new ProdutoDtoSaida(produto), HttpStatus.OK);
     }
+
     public ResponseEntity<?> removerImagens(Long produtoId, List<ImagemDtoSaida> imagens) {
         Imagem imagem;
         File arquivo;
@@ -131,6 +137,7 @@ public class ProdutoService {
         }
         return buscarPorId(produtoId);
     }
+
     public Page<ProdutoDtoSaida> buscarPorNome(String busca, Pageable pageable) {
         Page<Produto> prods = produtoRepository.findByNomeContainingIgnoreCase(busca, pageable);
         return new PageImpl<>(prods.stream().map(
@@ -140,12 +147,14 @@ public class ProdutoService {
                 }
         ).toList(), pageable, prods.getTotalElements());
     }
+
     public ResponseEntity<?> editar(ProdutoDtoEntrada produto, Long id) throws InvocationTargetException, IllegalAccessException {
         var prod = buscarProdutoPorId(id);
         beanUtilsBean.copyProperties(prod, new Produto(produto));
 
         return new ResponseEntity<>(new ProdutoDtoSaida(produtoRepository.save(prod)), HttpStatus.OK);
     }
+
     private Produto buscarProdutoPorId(Long id) {
         var busca = produtoRepository.findById(id);
         if (busca.isEmpty())

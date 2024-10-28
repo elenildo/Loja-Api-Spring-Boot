@@ -54,6 +54,7 @@ public class CategoriaService {
 
         return busca.get();
     }
+
     public Page<CategoriaDtoSaida> buscarCategoriaPorNome(String nome, Pageable pageable) {
         Page<Categoria> cats = categoriaRepository.findByNomeContaining(nome, pageable);
         return new PageImpl<>(cats.stream().map(

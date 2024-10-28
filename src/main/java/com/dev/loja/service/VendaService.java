@@ -114,7 +114,6 @@ public class VendaService {
             return new PedidoDtoSaida(pedidoSalvo);
         }
         return new PedidoDtoSaida(pedido);
-
     }
 
     private Set<CarrinhoItem> somaRepetidos(List<CarrinhoItem> itens) {

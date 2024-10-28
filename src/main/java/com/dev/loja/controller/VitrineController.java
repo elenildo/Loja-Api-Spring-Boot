@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/")
+@RequestMapping({"", "/"})
 public class VitrineController {
     private ProdutoService produtoService;
 
@@ -20,14 +20,17 @@ public class VitrineController {
     public ResponseEntity<?> buscarProdutosPorNome(@PathVariable String nome, Pageable pageable){
         return new ResponseEntity<>(produtoService.buscarPorNome(nome, pageable), HttpStatus.OK);
     }
+
     @GetMapping
     public ResponseEntity<?> index(Pageable pageable){
         return home(pageable);
     }
+
     @GetMapping("home")
     public ResponseEntity<?> home(Pageable pageable){
         return new ResponseEntity<>(produtoService.listarTudoVitrine(pageable), HttpStatus.OK);
     }
+
     @GetMapping("{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable Long id){
         return produtoService.buscarPorIdHome(id);
