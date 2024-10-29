@@ -40,7 +40,7 @@ public class ProdutoService {
     private BeanUtilsBean beanUtilsBean;
 
 //    private final String path = System.getProperty("user.dir") + "/upload/produtos/";
-    private final String path = "/home/elenildo/apps/loja/imagens/produtos/";
+    private final String path = "/home/apps/loja/imagens/produtos/";
 
     public Page<ProdutoDtoSaida> listarTudo(Pageable pageable) {
         Page<Produto> prods = produtoRepository.findAll(pageable);
