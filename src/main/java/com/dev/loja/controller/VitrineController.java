@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 @RequestMapping({"", "/"})
 public class VitrineController {
+
     private ProdutoService produtoService;
 
     @GetMapping("home/busca/{nome}")
@@ -33,9 +34,8 @@ public class VitrineController {
 
     @GetMapping("{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable Long id){
-        return produtoService.buscarPorIdHome(id);
+        return new ResponseEntity<>(produtoService.buscarPorIdHome(id), HttpStatus.OK);
     }
-
 
     @GetMapping("home/{categoria}")
     public ResponseEntity<?> produtosPorCategoria(@PathVariable String categoria, Pageable pageable){

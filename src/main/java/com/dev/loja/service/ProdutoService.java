@@ -14,11 +14,11 @@ import com.dev.loja.repository.ProdutoRepository;
 import lombok.AllArgsConstructor;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.io.IOUtils;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,8 +42,10 @@ public class ProdutoService {
 //    private final String path = System.getProperty("user.dir") + "/upload/produtos/";
     private final String path = "/home/apps/loja/imagens/produtos/";
 
+    @Cacheable("produtos")
     public Page<ProdutoDtoSaida> listarTudo(Pageable pageable) {
         Page<Produto> prods = produtoRepository.findAll(pageable);
+        simulateLatency(1000);
         return new PageImpl<>(prods.stream().map(
                 produto -> {
                     produto.setImagens(this.carregarImagemPorProduto(produto));
@@ -52,6 +54,7 @@ public class ProdutoService {
         ).toList(), pageable, prods.getTotalElements());
     }
 
+    @Cacheable("produtos-vitrine")
     public Page<ProdutoDtoVitrine> listarTudoVitrine(Pageable pageable) {
         Page<Produto> prods = produtoRepository.findAll(pageable);
         return new PageImpl<>(prods.stream().map(
@@ -70,27 +73,28 @@ public class ProdutoService {
                 }).toList(), pageable, prods.getTotalElements());
     }
 
-    public ResponseEntity<?> novo(ProdutoDtoEntrada produtoDto) {
+    @CacheEvict(cacheNames = {"produtos", "produtos-vitrine"}, allEntries = true)
+    public Produto novo(ProdutoDtoEntrada produtoDto) {
         var busca = categoriaRepository.findById(produtoDto.categoria.getId());
         if(busca.isEmpty())
 //            return new ResponseEntity<>("A categoria informada não existe", HttpStatus.BAD_REQUEST);
             throw new EntityNotFoundException("A categoria informada não existe");
 
-        return new ResponseEntity<>(produtoRepository.save(new Produto(produtoDto)), HttpStatus.CREATED);
+        return new Produto(produtoDto);
     }
 
-    public ResponseEntity<?> buscarPorId(Long id) {
+    public ProdutoDtoSaida buscarPorId(Long id) {
         var produto = buscarProdutoPorId(id);
-        return new ResponseEntity<>(new ProdutoDtoSaida(produto), HttpStatus.OK);
+        return new ProdutoDtoSaida(produto);
     }
 
-    public ResponseEntity<?> buscarPorIdHome(Long id) { //home
+    public ProdutoDtoVitrine buscarPorIdHome(Long id) { //home
         var produto = buscarProdutoPorId(id);
         produto.setImagens(this.carregarImagemPorProduto(produto));
-        return new ResponseEntity<>(new ProdutoDtoVitrine(produto), HttpStatus.OK);
+        return new ProdutoDtoVitrine(produto);
     }
 
-    public ResponseEntity<?> adicionarImagens(Long id, MultipartFile[] files) {
+    public ProdutoDtoSaida adicionarImagens(Long id, MultipartFile[] files) {
         List<String> contentTypes = Arrays.asList("image/png", "image/jpeg", "image/gif");
         for(MultipartFile file : files){
             if(!contentTypes.contains(file.getContentType()))
@@ -119,10 +123,10 @@ public class ProdutoService {
         produto.setImagens(imagemRepository.saveAll(imagens));
         produtoRepository.save(produto);
 
-        return new ResponseEntity<>(new ProdutoDtoSaida(produto), HttpStatus.OK);
+        return new ProdutoDtoSaida(produto);
     }
 
-    public ResponseEntity<?> removerImagens(Long produtoId, List<ImagemDtoSaida> imagens) {
+    public ProdutoDtoSaida removerImagens(Long produtoId, List<ImagemDtoSaida> imagens) {
         Imagem imagem;
         File arquivo;
         for(ImagemDtoSaida imagemDto : imagens){
@@ -148,11 +152,11 @@ public class ProdutoService {
         ).toList(), pageable, prods.getTotalElements());
     }
 
-    public ResponseEntity<?> editar(ProdutoDtoEntrada produto, Long id) throws InvocationTargetException, IllegalAccessException {
+    public ProdutoDtoSaida editar(ProdutoDtoEntrada produto, Long id) throws InvocationTargetException, IllegalAccessException {
         var prod = buscarProdutoPorId(id);
         beanUtilsBean.copyProperties(prod, new Produto(produto));
 
-        return new ResponseEntity<>(new ProdutoDtoSaida(produtoRepository.save(prod)), HttpStatus.OK);
+        return new ProdutoDtoSaida(produtoRepository.save(prod));
     }
 
     private Produto buscarProdutoPorId(Long id) {
@@ -175,6 +179,14 @@ public class ProdutoService {
             }
         });
         return produto.getImagens();
+    }
+
+    private void simulateLatency(int miliseconds) {
+        try {
+            Thread.sleep(miliseconds);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

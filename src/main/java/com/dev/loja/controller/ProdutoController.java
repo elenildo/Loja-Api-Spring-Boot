@@ -27,7 +27,7 @@ public class ProdutoController {
 
     @GetMapping("{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable Long id){
-        return produtoService.buscarPorId(id);
+        return new ResponseEntity<>(produtoService.buscarPorId(id), HttpStatus.OK);
     }
 
 //    @PostMapping("busca")
@@ -41,21 +41,21 @@ public class ProdutoController {
 
     @PostMapping
     public ResponseEntity<?> novo(@RequestBody @Valid ProdutoDtoEntrada produtoDto){
-        return produtoService.novo(produtoDto);
+        return new ResponseEntity<>(produtoService.novo(produtoDto), HttpStatus.CREATED);
     }
 
     @PostMapping("{produtoId}/imagens")
     public ResponseEntity<?> adicionarImagens(@PathVariable Long produtoId, @RequestPart MultipartFile[] files){
-        return produtoService.adicionarImagens(produtoId, files);
+        return new ResponseEntity<>(produtoService.adicionarImagens(produtoId, files), HttpStatus.CREATED);
     }
 
     @DeleteMapping("{produtoId}/imagens")
     public ResponseEntity<?> removerImagens(@PathVariable Long produtoId, @RequestBody List<ImagemDtoSaida> imagens){
-        return produtoService.removerImagens(produtoId, imagens);
+        return new ResponseEntity<>(produtoService.removerImagens(produtoId, imagens), HttpStatus.OK);
     }
 
     @PatchMapping("{id}")
     public ResponseEntity<?> editar(@RequestBody ProdutoDtoEntrada produto, @PathVariable Long id) throws InvocationTargetException, IllegalAccessException {
-        return produtoService.editar(produto, id);
+        return new ResponseEntity<>(produtoService.editar(produto, id), HttpStatus.OK);
     }
 }
