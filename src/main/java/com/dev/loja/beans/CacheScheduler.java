@@ -15,6 +15,6 @@ public class CacheScheduler {
     @Scheduled(fixedDelay = 24, timeUnit = TimeUnit.HOURS)
     @CacheEvict(cacheNames = {"produtos", "produtos-vitrine"})
     public void limparCacheProdutos() {
-        log.info("{} - Feita a limpeza do cache 'Produtos'", LocalDateTime.now());
+        log.info("Feita a limpeza do cache 'Produtos'");
     }
 }

@@ -64,6 +64,7 @@ public class ProdutoService {
                 }).toList(), pageable, prods.getTotalElements());
     }
 
+    @Cacheable("produtos-vitrine")
     public Page<ProdutoDtoVitrine> produtosPorCategoriaNome(String categoria, Pageable pageable) {
         Page<Produto> prods = produtoRepository.getProdutoByCategoriaNome(categoria, pageable);
         return new PageImpl<>(prods.stream().map(
