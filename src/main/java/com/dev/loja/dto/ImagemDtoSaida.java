@@ -2,9 +2,10 @@ package com.dev.loja.dto;
 
 import com.dev.loja.model.Imagem;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ImagemDtoSaida {
+public class ImagemDtoSaida implements Serializable {
     public boolean delete = false;
     public String caminho;
     public byte[] imagem;

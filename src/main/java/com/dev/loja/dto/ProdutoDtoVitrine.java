@@ -7,9 +7,10 @@ import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ProdutoDtoVitrine extends RepresentationModel<ProdutoDtoVitrine> {
+public class ProdutoDtoVitrine extends RepresentationModel<ProdutoDtoVitrine> implements Serializable {
 
     public String id;
     public String categoria;

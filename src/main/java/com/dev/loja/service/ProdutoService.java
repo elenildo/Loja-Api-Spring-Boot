@@ -45,7 +45,7 @@ public class ProdutoService {
     @Cacheable("produtos")
     public Page<ProdutoDtoSaida> listarTudo(Pageable pageable) {
         Page<Produto> prods = produtoRepository.findAll(pageable);
-        simulateLatency(1000);
+//        simulateLatency(1000);
         return new PageImpl<>(prods.stream().map(
                 produto -> {
                     produto.setImagens(this.carregarImagemPorProduto(produto));

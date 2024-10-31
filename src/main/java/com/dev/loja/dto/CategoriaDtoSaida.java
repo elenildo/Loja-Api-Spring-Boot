@@ -7,8 +7,11 @@ import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 
+import java.io.Serializable;
+
 @NoArgsConstructor
-public class CategoriaDtoSaida extends RepresentationModel<CategoriaDtoSaida> {
+public class CategoriaDtoSaida extends RepresentationModel<CategoriaDtoSaida> implements Serializable {
+
     public Long id;
     public String nome;
 
