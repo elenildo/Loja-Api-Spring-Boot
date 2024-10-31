@@ -81,7 +81,7 @@ public class ProdutoService {
 //            return new ResponseEntity<>("A categoria informada não existe", HttpStatus.BAD_REQUEST);
             throw new EntityNotFoundException("A categoria informada não existe");
 
-        return new Produto(produtoDto);
+        return produtoRepository.save(new Produto(produtoDto));
     }
 
     public ProdutoDtoSaida buscarPorId(Long id) {
