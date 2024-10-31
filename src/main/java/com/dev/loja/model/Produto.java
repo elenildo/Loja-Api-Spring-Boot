@@ -21,13 +21,17 @@ public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne
     private Categoria categoria;
-    @OneToMany(mappedBy = "produto")
+
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
     private List<Imagem> imagens = new ArrayList<>();
+
     @NotBlank
     @Column(unique = true)
     private String nome;
+
     private BigDecimal precoCompra;
     private BigDecimal precoVenda;
     private Integer estoqueAtual = 0;

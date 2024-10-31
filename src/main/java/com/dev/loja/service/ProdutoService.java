@@ -95,6 +95,7 @@ public class ProdutoService {
         return new ProdutoDtoVitrine(produto);
     }
 
+    @CacheEvict(cacheNames = {"produtos", "produtos-vitrine"}, allEntries = true)
     public ProdutoDtoSaida adicionarImagens(Long id, MultipartFile[] files) {
         List<String> contentTypes = Arrays.asList("image/png", "image/jpeg", "image/gif");
         for(MultipartFile file : files){
@@ -127,6 +128,7 @@ public class ProdutoService {
         return new ProdutoDtoSaida(produto);
     }
 
+    @CacheEvict(cacheNames = {"produtos", "produtos-vitrine"}, allEntries = true)
     public ProdutoDtoSaida removerImagens(Long produtoId, List<ImagemDtoSaida> imagens) {
         Imagem imagem;
         File arquivo;
@@ -153,11 +155,19 @@ public class ProdutoService {
         ).toList(), pageable, prods.getTotalElements());
     }
 
+    @CacheEvict(cacheNames = {"produtos", "produtos-vitrine"}, allEntries = true)
     public ProdutoDtoSaida editar(ProdutoDtoEntrada produto, Long id) throws InvocationTargetException, IllegalAccessException {
         var prod = buscarProdutoPorId(id);
         beanUtilsBean.copyProperties(prod, new Produto(produto));
 
         return new ProdutoDtoSaida(produtoRepository.save(prod));
+    }
+
+    @CacheEvict(cacheNames = {"produtos", "produtos-vitrine"}, allEntries = true)
+    public void remover(Long id) {
+        var produto = buscarProdutoPorId(id);
+        removerImagens(id, produto.getImagens().stream().map(ImagemDtoSaida::new).toList());
+        produtoRepository.delete(produto);
     }
 
     private Produto buscarProdutoPorId(Long id) {
@@ -189,6 +199,5 @@ public class ProdutoService {
             throw new RuntimeException(e);
         }
     }
-
 
 }

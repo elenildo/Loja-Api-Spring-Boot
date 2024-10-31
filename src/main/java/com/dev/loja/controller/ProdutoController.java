@@ -30,6 +30,12 @@ public class ProdutoController {
         return new ResponseEntity<>(produtoService.buscarPorId(id), HttpStatus.OK);
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> removerProduto(@PathVariable Long id) {
+        produtoService.remover(id);
+        return ResponseEntity.ok("Produto Removido com sucesso");
+    }
+
 //    @PostMapping("busca")
 //    public ResponseEntity<?> buscarPorNome(@RequestParam String nome){
 //        return produtoService.buscarPorNome(nome);

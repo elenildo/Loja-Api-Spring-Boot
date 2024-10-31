@@ -7,6 +7,7 @@ import com.dev.loja.exception.EntityNotFoundException;
 import com.dev.loja.model.Categoria;
 import com.dev.loja.repository.CategoriaRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +41,7 @@ public class CategoriaService {
         return new CategoriaDtoSaida(categoria);
     }
 
+    @CacheEvict(cacheNames = {"produtos", "produtos-vitrine"}, allEntries = true)
     public CategoriaDtoSaida editar(Long id, CategoriaDto categoriaDto) {
         var categoria = buscarCategoriaPorId(id);
         categoria.setNome(categoriaDto.nome());
