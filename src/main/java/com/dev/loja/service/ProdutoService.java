@@ -86,6 +86,7 @@ public class ProdutoService {
 
     public ProdutoDtoSaida buscarPorId(Long id) {
         var produto = buscarProdutoPorId(id);
+        produto.setImagens(this.carregarImagemPorProduto(produto));
         return new ProdutoDtoSaida(produto);
     }
 

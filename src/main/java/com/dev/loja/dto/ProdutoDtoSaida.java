@@ -12,7 +12,6 @@ import java.util.List;
 
 public class ProdutoDtoSaida extends RepresentationModel<ProdutoDtoSaida> implements Serializable {
     public String id;
-    public CategoriaDtoSaida categoria;
     public String nome;
     public String precoCompra;
     public String precoVenda;
@@ -22,6 +21,7 @@ public class ProdutoDtoSaida extends RepresentationModel<ProdutoDtoSaida> implem
     @Lob
     public String descricao;
     public Boolean ativo;
+    public CategoriaDtoSaida categoria;
     public List<ImagemDtoSaida> imagens;
     public ProdutoDtoSaida(Produto produto){
         this.id = String.valueOf(produto.getId());
