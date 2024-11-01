@@ -22,6 +22,7 @@ upload/
 src/main/resources/application-mysql.properties
 src/main/resources/application-postgres.properties
 src/main/resources/application-h2.properties
+out/
 
 ### NetBeans ###
 /nbproject/private/
