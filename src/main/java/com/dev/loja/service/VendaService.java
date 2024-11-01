@@ -16,6 +16,7 @@ import com.dev.loja.model.Produto;
 import com.dev.loja.repository.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -153,6 +154,7 @@ public class VendaService {
         }
     }
 
+    @CacheEvict(cacheNames = {"produtos", "produtos-vitrine"}, allEntries = true)
     private void atualizarEstoque(CarrinhoItem item) {
         for (int i=0; i<item.quantidade; i++){
             Lancamento primeiroProduto = lancamentoRepository.retornarPrimeirolancamento(item.produtoId, ProdutoStatus.DISPONIVEL);

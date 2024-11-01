@@ -6,6 +6,7 @@ import com.dev.loja.model.Produto;
 import com.dev.loja.repository.LancamentoRepository;
 import com.dev.loja.repository.ProdutoRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +22,7 @@ public class LancamentoService {
     private LancamentoRepository lancamentoRepository;
     private ProdutoRepository produtoRepository;
 
+    @CacheEvict(cacheNames = {"produtos", "produtos-vitrine"}, allEntries = true)
     public ResponseEntity<?> lancarProduto(Lancamento lancamento, UserDetails userDetails) {
         var produto = buscarProdutoPorId(lancamento.getProduto().getId());
 

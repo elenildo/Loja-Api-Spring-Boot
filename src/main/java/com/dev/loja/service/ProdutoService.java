@@ -98,10 +98,10 @@ public class ProdutoService {
 
     @CacheEvict(cacheNames = {"produtos", "produtos-vitrine"}, allEntries = true)
     public ProdutoDtoSaida adicionarImagens(Long id, MultipartFile[] files) {
-        List<String> contentTypes = Arrays.asList("image/png", "image/jpeg", "image/gif");
+        List<String> contentTypes = Arrays.asList("image/png", "image/jpeg", "image/gif", "image/webp");
         for(MultipartFile file : files){
             if(!contentTypes.contains(file.getContentType()))
-                throw new FileOperationException("Somente imagens PNG, JPG e GIF são permitidas.");
+                throw new FileOperationException("Somente imagens PNG, JPG, WEBP e GIF são permitidas.");
         }
         var produto = buscarProdutoPorId(id);
         String filename;
