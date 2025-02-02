@@ -23,6 +23,7 @@ src/main/resources/application-mysql.properties
 src/main/resources/application-postgres.properties
 src/main/resources/application-h2.properties
 out/
+doker-compose.yml
 
 ### NetBeans ###
 /nbproject/private/
